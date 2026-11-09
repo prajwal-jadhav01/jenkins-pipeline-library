@@ -1,0 +1,11 @@
+// A React/Angular front end. Tests run in the browser-less CI mode; nginx serves the build output.
+@Library('pipeline-library@v1') _
+
+deliveryPipeline(
+    appName: 'web-ui',
+    appType: 'node-ui',
+    registry: 'registry.example.com/platform',
+    hostPort: 8081,                     // nginx on the host proxies /app to this port
+    buildArgs: [BUILD_DIR: 'dist'],
+    environments: [dev: [host: 'dev-app-1'], prod: [host: 'prod-app-1']]
+)

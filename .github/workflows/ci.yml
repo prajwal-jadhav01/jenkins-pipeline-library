@@ -1,0 +1,30 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+      - name: Unit tests (Spock)
+        run: gradle test
+      - name: Lint deploy script
+        run: shellcheck resources/dev/prajwal/pipeline/deploy/deploy.sh
+
+  deploy-script:
+    # Runs deploy.sh against a real Docker daemon: one good deploy, then a bad image that must roll back.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./scripts/test-deploy.sh

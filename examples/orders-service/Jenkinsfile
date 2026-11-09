@@ -1,0 +1,11 @@
+// A Java service that keeps its own Dockerfile and skips the staging environment.
+@Library('pipeline-library@v1') _
+
+deliveryPipeline(
+    appName: 'orders-service',
+    appType: 'java-service',
+    registry: 'registry.example.com/platform',
+    dockerfile: 'docker/Dockerfile',
+    environments: [dev: [host: 'dev-app-2'], prod: [host: 'prod-app-2']],
+    prodApprovers: 'orders-leads'
+)

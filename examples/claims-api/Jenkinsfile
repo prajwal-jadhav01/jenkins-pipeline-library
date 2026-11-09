@@ -1,0 +1,14 @@
+// The whole Jenkinsfile for a .NET API (for example github.com/prajwal-jadhav01/approval-workflow-api).
+@Library('pipeline-library@v1') _
+
+deliveryPipeline(
+    appName: 'claims-api',
+    appType: 'dotnet-api',
+    registry: 'registry.example.com/platform',
+    buildArgs: [PROJECT: 'src/ClaimsApproval.Api/ClaimsApproval.Api.csproj'],
+    environments: [
+        dev    : [host: 'dev-app-1'],
+        staging: [host: 'stg-app-1'],
+        prod   : [host: 'prod-app-1'],
+    ]
+)
