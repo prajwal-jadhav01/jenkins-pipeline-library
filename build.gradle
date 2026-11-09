@@ -1,0 +1,33 @@
+// Gradle is only used to unit test the library. Jenkins loads the files straight from git.
+plugins {
+    id 'groovy'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Jenkins runs pipelines on Groovy 2.4; the code avoids anything newer so it runs on both.
+    implementation 'org.codehaus.groovy:groovy:3.0.25'
+    testImplementation 'org.spockframework:spock-core:2.4-groovy-3.0'
+}
+
+sourceSets {
+    main {
+        groovy { srcDirs = ['src'] }
+        resources { srcDirs = ['resources'] }
+    }
+    test {
+        groovy { srcDirs = ['test/groovy'] }
+        resources { srcDirs = ['vars'] }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'passed', 'failed'
+        exceptionFormat 'full'
+    }
+}
